@@ -25,6 +25,9 @@ if __name__ == '__main__':
         target_file_path = file
 
         # ★ポイント１
+        # 独自に実装したListenerのインスタンスを生成した後、後述するAstProcessorのインスタンスを生成します。
+        # 解析対象のファイルのファイルパスを引数としてAstProcessorのexecuteメソッドを実行し、ソースコードの解析を実行します。
+        # executeメソッドの戻り値は解析結果です。
         ast_info = AstProcessor(BasicInfoListener()).execute(target_file_path)
         
 
