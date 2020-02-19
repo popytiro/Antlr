@@ -13,6 +13,9 @@ class AstProcessor:
         self.listener = listener
 
     # ★ポイント２
+    # 解析対象のファイルからJavaLexerのインスタンスを生成し、それを利用してJavaParserのインスタンスを生成します。
+    # 解析はParseTreeWalkerのインスタンスのwalkメソッドを呼び出すことで実行されます。
+    # Listenerの処理が異なってもこの流れは同じです。
     def execute(self, input_source):
         print("hello")
         parser = JavaParser(CommonTokenStream(JavaLexer(FileStream(input_source, encoding="utf-8"))))
