@@ -17,7 +17,6 @@ if __name__ == '__main__':
     c = 0
     java_files = Path("C:/Users/acmil/Desktop/Antlr/Research/dataset").glob("**/*.java")
     for file in java_files:
-        print("hello")
         if c == 2:
            exit()
         c+=1

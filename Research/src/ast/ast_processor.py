@@ -17,12 +17,10 @@ class AstProcessor:
     # 解析はParseTreeWalkerのインスタンスのwalkメソッドを呼び出すことで実行されます。
     # Listenerの処理が異なってもこの流れは同じです。
     def execute(self, input_source):
-        print("hello")
         parser = JavaParser(CommonTokenStream(JavaLexer(FileStream(input_source, encoding="utf-8"))))
         walker = ParseTreeWalker()
         walker.walk(self.listener, parser.compilationUnit())
         # self.logger.debug('Display all data extracted by AST. \n' + pformat(self.listener.ast_info, width=160))
         # print(self.listener.call_methods)
         # print(self.listener.ast_info['methods'])
-        print('hello')
         return self.listener.ast_info
