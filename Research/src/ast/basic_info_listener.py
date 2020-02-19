@@ -4,9 +4,11 @@ from ast.JavaParser import JavaParser
 
 
 # ★ポイント３
+# JavaParserListenerを拡張（継承）して独自のListenerであるBasicInfoListenerを定義します。
 class BasicInfoListener(JavaParserListener):
 
     # ★ポイント４
+    # 解析結果を保持するast_infoを定義します。プロパティの名称および内容は解析したい目的に応じて各自で適宜修正してください。
     def __init__(self):
         self.call_methods = []
         self.ast_info = {
@@ -20,6 +22,9 @@ class BasicInfoListener(JavaParserListener):
         }
 
     # ★ポイント５
+    # JavaParserListenerで定義されているフックポイントの関数をオーバライドして独自の解析処理を実装します。
+    # 例えばenterPackageDeclarationは名前が示す通り、Javaのソースコードのパッケージ定義が開始された箇所で呼び出されます。
+    # 引数のctxは型が異なりますが、親クラスが存在するため、構文解析で必要となる基本情報にはどのコンテキストクラスでもアクセスすることができます。
     # Enter a parse tree produced by JavaParser#packageDeclaration.
     def enterPackageDeclaration(self, ctx:JavaParser.PackageDeclarationContext):
         self.ast_info['packageName'] = ctx.qualifiedName().getText()
@@ -41,6 +46,7 @@ class BasicInfoListener(JavaParserListener):
     def exitMethodDeclaration(self, ctx:JavaParser.MethodDeclarationContext):
 
         # ★ポイント６
+        # AST（抽象構文木）の名前が示す通りctxは木構造になっています。getChild関数でそのコンテキストの子ノードにアクセスすることができます。子ノードの内容はコンテキストによって異なります。
         c1 = ctx.getChild(0).getText()  # ---> return type
         c2 = ctx.getChild(1).getText()  # ---> method name
         # c3 = ctx.getChild(2).getText()  # ---> params
@@ -59,6 +65,10 @@ class BasicInfoListener(JavaParserListener):
     # Enter a parse tree produced by JavaParser#methodCall.
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
         # ★ポイント７
+        # 通常、AST（抽象構文木）では具象情報である行番号や文字位置を保持しませんが、ANTLRではこれらの情報をコンテキストで保持しています。やはりソースコードを解析する際にこれらの情報は役立つので、必要に応じて利用してください。
+
+        # ctx.start.line　：　当該コンテキストのソースコード上の行番号
+        # ctx.start.column　：　当該コンテキストのソースコード上の文字位置
         line_number = str(ctx.start.line)
         column_number = str(ctx.start.column)
         self.call_methods.append(line_number + ' ' + column_number + ' ' + ctx.parentCtx.getText())
