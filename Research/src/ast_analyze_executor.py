@@ -15,8 +15,9 @@ if __name__ == '__main__':
     # logging.config.fileConfig(logging_setting_path)
     # logger = logging.getLogger(__file__)
     c = 0
-    java_files = Path("C:/Users/yuki-fu/Desktop/先行研究の再現/dataset/").glob("**/*.java")
+    java_files = Path("C:/Users/acmil/Desktop/Antlr/Research/dataset").glob("**/*.java")
     for file in java_files:
+        print("hello")
         if c == 2:
            exit()
         c+=1
