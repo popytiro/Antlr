@@ -62,13 +62,27 @@ class BasicInfoListener(JavaParserListener):
         }
         self.ast_info['methods'].append(method_info)
         # print(self.ast_info['methods'])
-        # メソッド名の表示
-        pprint.pprint(method_info['methodName'])
+        # ターゲットメソッド名の表示
+        # pprint.pprint(method_info['methodName'])
         # 呼び出しメソッド名の表示 
-        pprint.pprint(method_info['callMethods'])
-
+        # pprint.pprint(method_info['callMethods'])
         
+        # ターゲットメソッド名を配列に格納
+        methodName_list = []
+        methodName_list.append(method_info['methodName'])
+        # print(methodName_list)
+        
+        # 呼び出しメソッド名を配列に格納
+        callMethods_list = []
+        callMethods_list.append(method_info['callMethods'])
+        # print(callMethods_list)
 
+        # ターゲットメソッドと呼び出しメソッドを辞書で紐づける
+        # link_methodname_callMethods = dict(zip(callMethods_list,methodName_list))
+        link_methodname_callMethods = dict(zip(methodName_list, callMethods_list))
+        pprint.pprint(link_methodname_callMethods)
+    
+    
     # Enter a parse tree produced by JavaParser#methodCall.
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
         # ★ポイント７
