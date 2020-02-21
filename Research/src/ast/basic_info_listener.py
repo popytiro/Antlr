@@ -1,6 +1,8 @@
 from ast.JavaParserListener import JavaParserListener
 from ast.JavaParser import JavaParser
 
+import pprint
+
 
 
 # ★ポイント３
@@ -59,7 +61,11 @@ class BasicInfoListener(JavaParserListener):
             'callMethods': self.call_methods
         }
         self.ast_info['methods'].append(method_info)
-        print(self.ast_info['methods'])
+        # print(self.ast_info['methods'])
+        # メソッド名の表示
+        pprint.pprint(method_info['methodName'])
+        # 呼び出しメソッド名の表示 
+        pprint.pprint(method_info['callMethods'])
        
 
     # Enter a parse tree produced by JavaParser#methodCall.
