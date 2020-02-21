@@ -66,7 +66,8 @@ class BasicInfoListener(JavaParserListener):
         pprint.pprint(method_info['methodName'])
         # 呼び出しメソッド名の表示 
         pprint.pprint(method_info['callMethods'])
-       
+
+        
 
     # Enter a parse tree produced by JavaParser#methodCall.
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
