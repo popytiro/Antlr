@@ -2,7 +2,7 @@ from ast.JavaParserListener import JavaParserListener
 from ast.JavaParser import JavaParser
 
 import pprint
-
+import csv
 
 
 # ★ポイント３
@@ -81,6 +81,12 @@ class BasicInfoListener(JavaParserListener):
         # link_methodname_callMethods = dict(zip(callMethods_list,methodName_list))
         link_methodname_callMethods = dict(zip(methodName_list, callMethods_list))
         pprint.pprint(link_methodname_callMethods)
+
+        # csvファイルに出力
+        # with open('data/temp/sample_writer_row.csv', 'w') as f:
+        # with open('C:/Users/acmil/Desktop/Antlr/Research/src/sample.csv', 'a') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerows([methodName_list, callMethods_list])
     
     
     # Enter a parse tree produced by JavaParser#methodCall.
