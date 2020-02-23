@@ -78,16 +78,37 @@ class BasicInfoListener(JavaParserListener):
         # print(callMethods_list)
 
         # ターゲットメソッドと呼び出しメソッドを辞書で紐づける
-        # link_methodname_callMethods = dict(zip(callMethods_list,methodName_list))
-        link_methodname_callMethods = dict(zip(methodName_list, callMethods_list))
-        pprint.pprint(link_methodname_callMethods)
+        # link_methodName_callMethods = dict(zip(callMethods_list,methodName_list))
+        link_methodName_callMethods = dict(zip(methodName_list, callMethods_list))
+        # pprint.pprint(link_methodName_callMethods)
 
-        # csvファイルに出力
-        # with open('data/temp/sample_writer_row.csv', 'w') as f:
-        # with open('C:/Users/acmil/Desktop/Antlr/Research/src/sample.csv', 'a') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerows([methodName_list, callMethods_list])
-    
+        
+        # csvに出力
+        for key in link_methodName_callMethods:
+            # print(key)
+            # print(link_methodName_callMethods[key])
+            for val in link_methodName_callMethods[key]:
+                # print(key)
+                # print(val)
+                # print("called method:" + val + "target method:" + key)
+
+                # with open("a.csv",'a', newline="") as f:
+                #     fieldnames = ['called method', 'method']
+                #     writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",",quotechar='"')
+                #     writer.writeheader()
+                #     for calledMethod in link_methodName_callMethods.keys():
+                #         print(key)
+                #         writer.writerow({'called method': val, 'method': key })
+                        # pprint.pprint(calledMethod)
+                        # pprint.pprint(link_methodName_callMethods[calledMethod])
+                
+                with open("calleMethod_methodName.csv",'a', newline="") as f:
+                    fieldnames = ['called method', 'method']
+                    writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",",quotechar='"')
+                    # writer.writeheader()
+                    for calledMethod in link_methodName_callMethods.keys():
+                        writer.writerow({'called method': val, 'method': key })
+
     
     # Enter a parse tree produced by JavaParser#methodCall.
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
