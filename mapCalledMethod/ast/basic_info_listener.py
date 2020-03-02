@@ -25,25 +25,23 @@ class BasicInfoListener(JavaParserListener):
         c2 = ctx.getChild(1).getText()  # ---> method name
         # c3 = ctx.getChild(2).getText()  # ---> params
         # params = self.parse_method_params_block(ctx.getChild(2))
-        startline_number = str(ctx.start.line)
-        endline_number = str(ctx.stop.line)
+        target_method_line_number = str(ctx.start.line)
 
         # print(c2)
         for calledMethod in self.call_methods:
-            self.calledMethodToMethod[calledMethod] = c2
-        
-
+            self.calledMethodToMethod[calledMethod] = target_method_line_number + '_' +c2
 
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
-        cmName = ctx.parentCtx.getText()
-        # print(cmName)
+        called_method_line_number = str(ctx.start.line)
+        called_method_name = ctx.parentCtx.getText()
+        # print('origin: ' + called_method_line_number + '_' + called_method_name)
         if 'assert' in ctx.parentCtx.getText():
             pass
         else:
-            calledMethod = cmName[cmName.rfind('.')+1:][:cmName[cmName.rfind('.')+1:].find('(')]
-            print(calledMethod)
-            self.call_methods.append(calledMethod)
-            print(self.call_methods)
+            calledMethod = called_method_name[called_method_name.rfind('.')+1:][:called_method_name[called_method_name.rfind('.')+1:].find('(')]
+            # print('edited: ' + called_method_line_number + '_' + calledMethod)
+            self.call_methods.append(called_method_line_number + '_' + calledMethod)
+            # print(self.call_methods)
 
     # Enter a parse tree produced by JavaParser#classDeclaration.
     def enterClassDeclaration(self, ctx:JavaParser.ClassDeclarationContext):        # self.mapClassToMethod = defaultdict(list)

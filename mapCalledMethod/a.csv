@@ -1,7 +1,8 @@
 called method,method
-toInt,fizzBuzz
-toString,fizzBuzz
-toInt1,fizzBuzz1
-toString1,fizzBuzz1
-toInt2,fizzBuzz2
-toString2,fizzBuzz2
+37_remaining,34_clone
+39_remaining,34_clone
+41_mark,34_clone
+42_duplicate,34_clone
+43_reset,34_clone
+67_copy,65_newRow
+73_copy,71_addCell
