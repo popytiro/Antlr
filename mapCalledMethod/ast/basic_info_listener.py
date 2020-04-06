@@ -25,26 +25,32 @@ class BasicInfoListener(JavaParserListener):
         c2 = ctx.getChild(1).getText()  # ---> method name
         # c3 = ctx.getChild(2).getText()  # ---> params
         # params = self.parse_method_params_block(ctx.getChild(2))
-        startline_number = str(ctx.start.line)
-        endline_number = str(ctx.stop.line)
+        target_method_line_number = str(ctx.start.line)
 
         # print(c2)
         for calledMethod in self.call_methods:
-            self.calledMethodToMethod[calledMethod] = c2
-        
-
+            self.calledMethodToMethod[calledMethod] = target_method_line_number + '_' +c2
 
     def enterMethodCall(self, ctx:JavaParser.MethodCallContext):
-        cmName = ctx.parentCtx.getText()
-        # print(cmName)
-        if 'assert' in ctx.parentCtx.getText():
-            pass
-        else:
-            calledMethod = cmName[cmName.rfind('.')+1:][:cmName[cmName.rfind('.')+1:].find('(')]
-            print(calledMethod)
-            self.call_methods.append(calledMethod)
-            print(self.call_methods)
+        called_method_line_number = str(ctx.start.line) # メソッド呼び出しが存在する行番号
+        called_method_name = ctx.parentCtx.getText() # ---> method name
 
+        if called_method_name.count('.') > 1: # 1文に複数のメソッド呼び出しが行われている場合
+            multiple_called_method_name = called_method_name.split('.') # 複数のメソッド呼び出しが行われている文を分割して配列に格納
+            multiple_called_method_name.pop(0) # 配列の先頭はメソッド呼び出しでないので削除
+            print(multiple_called_method_name) # 配列を表示
+            for divided_called_method_name in multiple_called_method_name: # 配列要素を処理
+                print(divided_called_method_name[:divided_called_method_name.rfind('(')])
+                calledMethod = divided_called_method_name[:divided_called_method_name.rfind('(')]
+                self.call_methods.append(called_method_line_number + '_' + calledMethod)
+
+        else:
+            if 'assert' in ctx.parentCtx.getText():
+                pass
+            else:
+                calledMethod = called_method_name[called_method_name.rfind('.')+1:][:called_method_name[called_method_name.rfind('.')+1:].find('(')]
+                self.call_methods.append(called_method_line_number + '_' + calledMethod)
+        
     # Enter a parse tree produced by JavaParser#classDeclaration.
     def enterClassDeclaration(self, ctx:JavaParser.ClassDeclarationContext):        # self.mapClassToMethod = defaultdict(list)
         className = ctx.getChild(1).getText()  # ---> class name
