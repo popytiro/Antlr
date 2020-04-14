@@ -1,6 +1,5 @@
-s1 = 'searchIterator(ColumnFilter.selection(columns()),false).next(clustering)'
-# s2 = 'current.staticRow.filter(columns,partitionDeletion,setActiveDeletionToRow,metadata)'
-test = 'buffer.remaining()'
+import csv 
+import pprint
 
 def extract_methods(text):
     res = []
@@ -17,6 +16,21 @@ def extract_methods(text):
             res.remove(e)
     return res
 
-# print(extract_methods(s1))
+with open('C:/Users/acmil/Desktop/Antlr/extractMethodName/src/cassandra.csv') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        print('メソッド抽出前：' + row[0])
+        a = str(row[0])
+        b = extract_methods(a)
+        print('メソッド抽出後：' + str(b))
+
+
+# s1 = 'searchIterator(ColumnFilter.selection(columns()),false).next(clustering)'
+# s2 = 'current.staticRow.filter(columns,partitionDeletion,setActiveDeletionToRow,metadata)'
+# test = 'buffer.remaining()'
+
+
+
+# print(extract_methods(s1))1
 # print(extract_methods(s2))
-print(extract_methods(test))
+# print(extract_methods(test))
