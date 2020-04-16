@@ -16,13 +16,24 @@ def extract_methods(text):
             res.remove(e)
     return res
 
+def remove_extra(text):
+    if('.' in text):
+        for i 
+
+
+
 with open('C:/Users/acmil/Desktop/Antlr/extractMethodName/src/cassandra.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         print('メソッド抽出前：' + row[0])
-        a = str(row[0])
-        b = extract_methods(a)
-        print('メソッド抽出後：' + str(b))
+        method_name_previous = str(row[0])
+        method_name_after = extract_methods(method_name_previous)
+        print('メソッド抽出後：' + str(method_name_after))
+
+        if('.' in str(method_name_after)):
+            removed_extra = extract_methods(method_name_after)
+            print('余分なものを抽出後：' + str(removed_extra))
+        
 
 
 # s1 = 'searchIterator(ColumnFilter.selection(columns()),false).next(clustering)'
