@@ -2,7 +2,7 @@ import logging.config
 from ast.ast_processor import AstProcessor
 from ast.basic_info_listener import BasicInfoListener
 from pathlib import Path
-# import csv
+import csv
 # import pprint
 
 # def code_search_net(dic, ast_process, post_process, frm=0, to=10000):
@@ -15,12 +15,15 @@ if __name__ == '__main__':
     # logging.config.fileConfig(logging_setting_path)
     # logger = logging.getLogger(__file__)
     c = 0
-    java_files = Path("C:/Users/acmil/Desktop/Antlr/Research/dataset").glob("**/*.java")
+    # メソッド抽出するファイルへのパス指定
+    java_files = Path("C:/Users/acmil/Desktop/Antlr/Research/dataset/test/cassandra").glob("**/*.java")
     for file in java_files:
-        # print(c) #javafilrの数の確認
-        if c == 2:
-           exit()
+        print(c) #javafilrの数の確認
+        # if c == 2:
+        #    exit()
         c+=1
+        # print(c)
+        print(file)
 
         #target_file_path = 'C:/temp/解析対象のファイル.java'
         target_file_path = file
