@@ -5,14 +5,9 @@ import pprint
 import csv
 
 
-# ★ポイント３
-# JavaParserListenerを拡張（継承）して独自のListenerであるBasicInfoListenerを定義します。
 class BasicInfoListener(JavaParserListener):
 
-
-    # ★ポイント４
-    # 解析結果を保持するast_infoを定義します。プロパティの名称および内容は解析したい目的に応じて各自で適宜修正してください。
-    def __init__(self):
+    # 解析結果を保持するast_infoを定義するプロパティの名称および内容は解析したい目的に応じて各自で適宜修正
         self.call_methods = []
         self.ast_info = {
             'packageName': '',
@@ -24,10 +19,6 @@ class BasicInfoListener(JavaParserListener):
             'methods': []
         }
 
-    # ★ポイント５
-    # JavaParserListenerで定義されているフックポイントの関数をオーバライドして独自の解析処理を実装します。
-    # 例えばenterPackageDeclarationは名前が示す通り、Javaのソースコードのパッケージ定義が開始された箇所で呼び出されます。
-    # 引数のctxは型が異なりますが、親クラスが存在するため、構文解析で必要となる基本情報にはどのコンテキストクラスでもアクセスすることができます。
     # Enter a parse tree produced by JavaParser#packageDeclaration.
 
     def enterPackageDeclaration(self, ctx: JavaParser.PackageDeclarationContext):
@@ -50,7 +41,7 @@ class BasicInfoListener(JavaParserListener):
     def exitMethodDeclaration(self, ctx: JavaParser.MethodDeclarationContext):
 
         # ★ポイント６
-        # AST（抽象構文木）の名前が示す通りctxは木構造になっています。getChild関数でそのコンテキストの子ノードにアクセスすることができます。子ノードの内容はコンテキストによって異なります。
+        # AST（抽象構文木）の名前が示す通りctxは木構造になっている。getChild関数でそのコンテキストの子ノードにアクセスすることができる。子ノードの内容はコンテキストによって異なる
         c1 = ctx.getChild(0).getText()  # ---> return type
         c2 = ctx.getChild(1).getText()  # ---> method name
         # c3 = ctx.getChild(2).getText()  # ---> params
@@ -58,12 +49,11 @@ class BasicInfoListener(JavaParserListener):
 
         method_info = {
             'returnType': c1,
-            'methodName': c2,
+            'methodName': c2, # メソッド名
             'params': params,
-            'callMethods': self.call_methods
+            'callMethods': self.call_methods # 呼び出しメソッド名
         }
         self.ast_info['methods'].append(method_info)
-        # print(self.ast_info['methods'])
         # ターゲットメソッド名の表示
         # pprint.pprint(method_info['methodName'])
         # 呼び出しメソッド名の表示
@@ -76,34 +66,17 @@ class BasicInfoListener(JavaParserListener):
 
         # 呼び出しメソッド名を配列に格納
         callMethods_list = []
-        callMethods_list.append(method_info['callMethods'])
-        pprint.pprint(callMethods_list)
+        callMethods_list.append(method_info['callMethods']) # これがソースコードを行で抽出していて困っている
+        # pprint.pprint(callMethods_list)
 
         # ターゲットメソッドと呼び出しメソッドを辞書で紐づける
-        # link_methodName_callMethods = dict(zip(callMethods_list,methodName_list))
-        link_methodName_callMethods = dict(
-            zip(methodName_list, callMethods_list))
+        
+        link_methodName_callMethods = dict(zip(methodName_list, callMethods_list))
         # pprint.pprint(link_methodName_callMethods)
 
         # csvに出力
-        for key in link_methodName_callMethods:
-            # print(key)
-            # print(link_methodName_callMethods[key])
-            for val in link_methodName_callMethods[key]:
-                # print(key)
-                # print(val)
-                # print("called method:" + val + "target method:" + key)
-
-                # with open("a.csv",'a', newline="") as f:
-                #     fieldnames = ['called method', 'method']
-                #     writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",",quotechar='"')
-                #     writer.writeheader()
-                #     for calledMethod in link_methodName_callMethods.keys():
-                #         print(key)
-                #         writer.writerow({'called method': val, 'method': key })
-                # pprint.pprint(calledMethod)
-                # pprint.pprint(link_methodName_callMethods[calledMethod])
-
+        for key in link_methodName_callMethods: # keyにメソッド名が入ってる
+            for val in link_methodName_callMethods[key]: #valに呼び出されるメソッド名が入ってる
                 #csvファイルにメソッド名を抽出する
                 with open("calleMethod_methodName_cassandra.csv", 'a', newline="", encoding="utf-8") as f:
                     fieldnames = ['called method', 'method']
@@ -115,9 +88,6 @@ class BasicInfoListener(JavaParserListener):
 
     # Enter a parse tree produced by JavaParser#methodCall.
     def enterMethodCall(self, ctx: JavaParser.MethodCallContext):
-        # ★ポイント７
-        # 通常、AST（抽象構文木）では具象情報である行番号や文字位置を保持しませんが、ANTLRではこれらの情報をコンテキストで保持しています。やはりソースコードを解析する際にこれらの情報は役立つので、必要に応じて利用してください。
-
         # ctx.start.line　：　当該コンテキストのソースコード上の行番号
         # ctx.start.column　：　当該コンテキストのソースコード上の文字位置
         line_number = str(ctx.start.line)
